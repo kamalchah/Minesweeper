@@ -1,9 +1,8 @@
-#Kamal Chahrour - 101162518 COMP 1405 ASSIGNMENT 5
 import random
 MINE_CHANCE = 10
 GRID_SIZE = 9
   
-def placeMines():#Places mine in board, 1 in GRID_SIZE chance
+def placeTrap():#Places mine in board, 1 in GRID_SIZE chance
     board = []
     row = []
     for y in range(GRID_SIZE):
@@ -17,7 +16,7 @@ def placeMines():#Places mine in board, 1 in GRID_SIZE chance
         board.append(row)
     return board
 
-def makeBoard():#Makes a 2D list for a board filled with #'s
+def createBoard():#Makes a 2D list for a board filled with #'s
     board = []
     row = []
     for y in range(GRID_SIZE):
@@ -27,7 +26,7 @@ def makeBoard():#Makes a 2D list for a board filled with #'s
         board.append(row)
     return board
 
-def showBoard(lis):#Prints out board
+def displayBoard(lis):#Prints out board
     output = " |"#Start of the first line
     for x in range(GRID_SIZE):
         output+=str(x) #Adds the Column numbers
@@ -45,7 +44,7 @@ def showBoard(lis):#Prints out board
                 output2+= lis[x][y]
         print(output2)
 
-def countHiddenCells(lis):#Counts #'s in board.
+def countHiddenSquares(lis):#Counts #'s in board.
     total = 0
     for x in range(len(lis)):
         for y in range(len(lis[x])):
@@ -53,7 +52,7 @@ def countHiddenCells(lis):#Counts #'s in board.
                 total+=1
     return total
 
-def countAllMines(lis):#Counts all mines in board.
+def countAllTraps(lis):#Counts all mines in board.
     total = 0
     for x in range(len(lis)):
         for y in range(len(lis[x])):
@@ -63,7 +62,7 @@ def countAllMines(lis):#Counts all mines in board.
                 continue
     return total
 
-def isMineAt(lis,row,col):#Checks if a mine is at a given cell
+def isTrapAt(lis,row,col):#Checks if a mine is at a given cell
     try:
         if lis[row][col] == 'x':
             return True
@@ -72,9 +71,9 @@ def isMineAt(lis,row,col):#Checks if a mine is at a given cell
     except:
         return False
 
-def countAdjacentMines(lis,row,col):#Validates input around the given cell to make sure it does not overlap the list and returns a number
+def countAdjacentTraps(lis,row,col):#Validates input around the given cell to make sure it does not overlap the list and returns a number
     total = 0
-    while isMineAt(lis,row,col) is False:
+    while isTrapAt(lis,row,col) is False:
         if ((row > 0 and col > 0) and lis[row-1][col-1] == 'x'):
             total+=1               
         if  (row > 0 and lis[row-1][col] == 'x'):
@@ -93,11 +92,11 @@ def countAdjacentMines(lis,row,col):#Validates input around the given cell to ma
             total+=1
         return total
 
-def main():#Game loop
-    board = makeBoard()
-    mines = placeMines()
+def gameLoop():#Game loop
+    board = createBoard()
+    mines = placeTrap()
     move = []
-    showBoard(board)#Shows first empty board
+    displayBoard(board)#Shows first empty board
     while True:
         while move == []:
             try:
@@ -107,23 +106,23 @@ def main():#Game loop
             except:
                 move = []
         
-        if isMineAt(mines,x,y) is True: #If you hit a mine entire board is revealed and you lose
+        if isTrapAt(mines,x,y) is True: #If you hit a mine entire board is revealed and you lose
             for i in range(len(mines)):
                 for n in range(len(mines)):
                     if mines[i][n] == 'x':#Goes through board and replaces hidden mines with an x
                         board[i][n] = 'x'
-            showBoard(board)
+            displayBoard(board)
             print("Game Over!")
             break
-        reveal(board,mines,x,y)
+        showCells(board,mines,x,y)
 
-        if countAllMines(mines) == countHiddenCells(board): #Checks if you won, hidden cells is the same number as mines
+        if countAllTraps(mines) == countHiddenSquares(board): #Checks if you won, hidden cells is the same number as mines
             print("You Win!!")
             break
         move = []
-        showBoard(board)
+        displayBoard(board)
         
-def reveal(board,mines,x,y):#reveals cells if they haven't hit a MINE
+def showCells(board,mines,x,y):#reveals cells if they haven't hit a MINE
     #input validation to see if x and y are in range
     gameboard = board
     mineboard = mines
@@ -134,19 +133,19 @@ def reveal(board,mines,x,y):#reveals cells if they haven't hit a MINE
     if gameboard[x][y] == " ": 
         return
 
-    numMines = countAdjacentMines(mineboard,x,y)#Counts number of mines around the cell
+    numMines = countAdjacentTraps(mineboard,x,y)#Counts number of mines around the cell
     
     if numMines > 0:#Mines are present
         gameboard[x][y] = str(numMines)#Mutates cell to be the numMines
 
     else:#Mines are not present
         gameboard[x][y] = ' '#Mutates to an empty cell
-        reveal(gameboard,mines,x+1,y)
-        reveal(gameboard,mines,x-1,y)#Goes through the left,right,up and down of the (nest line)
-        reveal(gameboard,mines,x,y-1)#cell to check for empty spaces/mines
-        reveal(gameboard,mines,x,y+1)
+        showCells(gameboard,mines,x+1,y)
+        showCells(gameboard,mines,x-1,y)#Goes through the left,right,up and down of the (nest line)
+        showCells(gameboard,mines,x,y-1)#cell to check for empty spaces/mines
+        showCells(gameboard,mines,x,y+1)
 
-main()
+gameLoop()
 
 
 

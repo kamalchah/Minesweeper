@@ -5,4 +5,4 @@ I enjoyed making this project because it helped me learn the basics of python fu
 The biggest obstacle I encountered during this project was handling the indexing of blocks out of bounds and a load of
 NullPointerException errors.
 
-To run, just run the python file.
+To run, just run the python file and play using the python interpreter using rows and columns as index's.

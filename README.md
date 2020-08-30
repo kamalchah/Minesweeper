@@ -7,4 +7,4 @@ NullPointerException errors.
 
 To run, just run the python file and play using the python interpreter using rows and columns as index's.
 
-![alt text](https://gyazo.com/05e000b91846783f892e6693294d2d99)
+![alt text](https://i.gyazo.com/05e000b91846783f892e6693294d2d99.png)

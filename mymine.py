@@ -2,9 +2,6 @@
 import random
 MINE_CHANCE = 10
 GRID_SIZE = 9
-#commit 
-ine = 5
-
   
 def placeMines():#Places mine in board, 1 in GRID_SIZE chance
     board = []
